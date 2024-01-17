@@ -1,15 +1,17 @@
+package WorldData;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class country {
-    int rank;
-    String name;
-    String continent;
+    private int rank;
+    private String name;
+    private String continent;
 
-    int [] pops;
+    private int [] pops;
 
-    double popPercent;
+    private double popPercent;
 
     public country(int rank, String name, String continent , int [] pops,double popPercent){
         this.rank = rank;
@@ -19,9 +21,6 @@ public class country {
         this.popPercent = popPercent;
     }
 
-    public int getRank() {
-        return rank;
-    }
 
     public String getName() {
         return name;
@@ -61,15 +60,4 @@ public class country {
         return (long) sum / count;
     }
 
-    @Override
-    public String toString() {
-        return "country{" +
-                "rank=" + rank +
-                ", name='" + name + '\'' +
-                ", continent='" + continent + '\'' +
-                ", Pops=" + Arrays.toString(pops) + '\'' +
-                ", PopsAvg= " + getAvg(pops) + '\'' +
-                ", PopPercent= " + popPercent+
-                '}';
-    }
 }

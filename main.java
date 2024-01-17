@@ -1,3 +1,5 @@
+package WorldData;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,17 +9,19 @@ import java.text.DecimalFormat;
 
 
 
+
 public class main {
-    public static void displayPops(String [] pops){
-        for(String pop : pops){
-            System.out.print(pop + " " );
+    public static void displayPops(int [] pops){
+        int [] dates = {1970,1980,1990,2000,2010,2015,2020,2022,2023};
+        for(int i =0; i < pops.length; i++){
+            System.out.println(dates[i] + ":" + formatWithCommas(pops[i]));
         }
     }
     public  static ArrayList<country> makeWorld(){
         // Creating list of "country" objects
         ArrayList<country> world = new ArrayList<>();
 
-        String filePath = "world_population_data.csv"; // Replace with the actual path to your text file
+        String filePath = "WorldData/world_population_data.csv"; // Replace with the actual path to your text file
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -38,7 +42,9 @@ public class main {
                 }
 
                 System.out.println();
-                int id = Integer.parseInt(items[0]);
+                int id = 1;
+                 id += Integer.parseInt(items[0]);
+
                 String popPercent = (items[items.length-1].replace("%",""));
                 double dub = Double.parseDouble(popPercent);
 
@@ -54,6 +60,22 @@ public class main {
 
 
     }
+    public static int getPops() {
+        Scanner scanner = new Scanner(System.in);
+        int userInput;
+
+
+        System.out.print("Would you like to view the population over time? [1]Yes, [2]No");
+        while (!scanner.hasNextInt()) {
+            // Handle non-integer input
+            scanner.nextInt(); // Consume the invalid input
+        }
+        userInput = scanner.nextInt();
+
+        // Close the scanner
+
+        return userInput;
+    }
     public static int getUserChoice() {
         Scanner scanner = new Scanner(System.in);
         int userInput;
@@ -62,7 +84,7 @@ public class main {
         System.out.print("Welcome to the world population databse would you like to search by [1]Population Rank, [2]Country Name or [3]quit: ");
             while (!scanner.hasNextInt()) {
                 // Handle non-integer input
-                scanner.next(); // Consume the invalid input
+                scanner.nextInt(); // Consume the invalid input
             }
             userInput = scanner.nextInt();
 
@@ -75,7 +97,7 @@ public class main {
         int userInput = 0;
 
         do {
-            System.out.print("Enter an integer in the range [0, 234] to find a country: ");
+            System.out.print("Enter an integer in the range [1, 234] to find a country: ");
             while (!scanner.hasNextInt()) {
                 // Handle non-integer input
                 System.out.println("Invalid input. Please enter a valid integer.");
@@ -104,8 +126,8 @@ public class main {
         System.out.println(c.getName()+ " is in the great continent of " + c.getContinent() + " with an average population of " + formatWithCommas(c.getAvg(c.getPops()))+ " which makes up " + c.getPopPercent() +" percent of the world");
 
 
-
     }
+
     public static String formatWithCommas(long number) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number);
@@ -120,9 +142,15 @@ public class main {
             if (search == 1) {
                 int userInput = getUserInputInRange();
                 // user input is index on "world" list of countrys
-                country c = (world.get(userInput));
+                country c = (world.get(userInput-1));
                 // accesing country object
                 displayCountry(userInput,c,false);
+                int uChoice = getPops();
+                if(uChoice == 1){
+                    displayPops(c.getPops());
+                }
+
+
 
 
 
@@ -154,7 +182,7 @@ public class main {
                         }
                         count++;
                     }
-                    if (found == false) {
+                    if (!found) {
                         System.out.println("Country not found");
                     }
 
@@ -163,6 +191,10 @@ public class main {
                 }
                 if(!quit) {
                     displayCountry(count, c, true);
+                    int uChoice = getPops();
+                    if(uChoice == 1){
+                        displayPops(c.getPops());
+                    }
                 }
 
             }
